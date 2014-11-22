@@ -12,6 +12,15 @@ myNot False = True
 -}
 
 
+--Hugs 98
+--exOr :: (Bool, Bool) -> Bool
+--exOr(x, y) = (x || y) && not (x && y)
+--> exOr(True, False)
+--True
+--> exOr(True, True)
+--False
+
+
 -- exOr(True, False) -> True
 -- exOr(False, True) -> True
 -- exOr(_, _) -> False
