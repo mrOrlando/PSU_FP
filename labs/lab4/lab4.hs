@@ -67,3 +67,33 @@ twopow n
 	| otherwise = do
 		let res = twopow ((n-1) `div` 2)
 		2 * res * res
+--6) функция removeOdd удаляет из заданного списка целых чисел все
+--нечётные числа.
+removeOdd :: [Integer] -> [Integer]
+removeOdd list = [item | item <- list, even item]
+--7) функция removeEmpty удаляет пустые строки из заданного списка строк.
+--н-р: removeEmpty ["", "Hello", "", "", "World!"] возвращает ["Hello", "World"]
+removeEmpty :: [String] -> [String]
+removeEmpty listStr = [str | str <- listStr, str /= ""]
+--8) функция возвращает количество элементов списка, равных True
+countTrue :: [Bool] -> Int
+countTrue listBool = length [item | item <- listBool, item]
+--9) функция makePositive меняет знак всех отрицательных элементов списка чисел,
+--н-р: makePositive [-1,0,5,-10,-20] дает [1,0,5,10,20]
+makePositive :: [Integer] -> [Integer]
+makePositive numbers = [abs number | number <- numbers]
+--10) функция delete принимает на вход строку и символ и возвращает строку, в
+--которой удалены все вхождения символа.
+--н-р: delete '1' "Hello world!" должно возвращать "Heo word!"
+delete :: Char -> String -> String
+delete c str = [s | s <- str, s /= c]
+--11) функция substitute заменяет в строке указанный символ на заданный.
+--н-р: substitute 'e' 'i' "eigenvalue" возвращает "iiginvalui"
+substitute :: Char -> Char -> String -> String
+substitute c1 c2 str = substitute' c1 c2 str ""
+
+substitute' :: Char -> Char -> String -> String -> String
+substitute' c1 c2 ""          acc = reverse acc
+substitute' c1 c2 (head:tail) acc
+	| head == c1 = substitute' c1 c2 tail (c2:acc)
+	| otherwise  = substitute' c1 c2 tail (head:acc)
