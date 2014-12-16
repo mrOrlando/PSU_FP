@@ -48,9 +48,9 @@ isParallel (x1,y1) (x2,y2) (a1,b1) (a2,b2)
 	| otherwise = False
 
 {-
-	> isParallel (1, 1) (2, 2) (2, 0) (4, 2)
+	> isParallel (1,1) (2,2) (2,0) (4,2)
 	True
-	> isParallel (0, 0) (4, 0) (0, 2) (4, 2)
+	> isParallel (0,0) (4,0) (0,2) (4,2)
 	True
 -}
 
