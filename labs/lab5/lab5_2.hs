@@ -114,6 +114,7 @@ beats2 GameCard{suit=s1, value=v1} GameCard{suit=s2, value=v2} trump
 	> beats2 card card2 "spades"
 	False
 	> beats2 card card2 "clubs"
+	False
 -}
 
 --5) Функция beatsList, принимает в качестве аргументов список карт, карту и козырную масть
