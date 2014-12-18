@@ -6,13 +6,13 @@
 
 --карта:
 
---type Suit = ["hearts" | "spades" | "tambourine" | "clubs"]
-
+--suit - масть
 --hearts - червы
 --spades - пики
 --tambourine - бубна
 --clubs -треф
 
+--value - номинал
 --11-туз
 --12-валет
 --13-дава
@@ -114,4 +114,43 @@ beats2 GameCard{suit=s1, value=v1} GameCard{suit=s2, value=v2} trump
 	> beats2 card card2 "spades"
 	False
 	> beats2 card card2 "clubs"
+-}
+
+--5) Функция beatsList, принимает в качестве аргументов список карт, карту и козырную масть
+--возвращает список тех карт из первого арнумента, которые бьют указанную карту с учетом козырной масти.
+beatsList :: [GameCard] -> GameCard -> String -> [GameCard]
+beatsList cards comparСard trump = [card | card <- cards, beats2 card comparСard trump]
+
+{-
+	> let card = GameCard{suit="hearts",value=6}
+	> let card2 = GameCard{suit="spades",value=11}
+	> beatsList [card,card2] card "spades"
+	[GameCard {suit = "spades", value = 11}]
+	> beatsList [card,card2] card "hearts"
+	[]
+-}
+
+
+--6) Функция, по заданному списку карт возвращающая список чисел, каждое из которых является
+--возможной суммой очков указанных карт, рассчитанных по правилам игры в «двадцать одно»:
+--младшие карты считаются по номиналу, валет, дама и король считаются за 10 очков, туз может
+--рассматриваться и как 1 и как 11 очков. Функция должна вернуть все возможные варианты.
+check21 :: [GameCard] -> [Int]
+check21 cards =
+	let values = [v | GameCard{value=v} <- cards] in --получает значение карт
+	let newVal = map (\x -> if x > 11 then 10 else x) values in --преобразование вальтов, дам и королей
+	if 11 `elem` newVal then --если в списке есть туз
+		let newVal2 = map (\x -> if x == 11 then 1 else x) newVal in -- заменяет 11 на 1
+		[sum newVal, sum newVal2] --считает обычную и новую суммы
+	else --если в списке нет туза
+		[sum newVal] --считает сумму
+
+{-
+	> let card = GameCard{suit="hearts",value=6}
+	> let card2 = GameCard{suit="spades",value=11}
+	> check21 [card,card2]
+	[17,7]
+	> let card3 = GameCard{suit="spades",value=14}
+	> check21 [card,card2,card3]
+	[27,17]
 -}
