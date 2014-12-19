@@ -15,7 +15,7 @@
 --value - номинал
 --11-туз
 --12-валет
---13-дава
+--13-дама
 --14-король
 
 data GameCard = GameCard{ suit  :: String -- масть
@@ -59,13 +59,13 @@ sameSuit cards@(head:_tail) =
 -- проверяет бьёт ли первая карта вторую
 --11-туз
 --12-валет
---13-дава
+--13-дама
 --14-король
 beats :: GameCard -> GameCard -> Bool
-beats GameCard{value=v1} GameCard{value=v2}
-	| (v1 == 11) && (v2 /= 11) = True -- если первая карта туз, а вторая нет
-	| (v2 == 11) = False -- если вторая карта туз
-	| (v1 > v2) = True -- если первая карта больше второй
+beats GameCard{suit=s1, value=v1} GameCard{suit=s2, value=v2}
+	| (v1 == 11) && (v2 /= 11) && (s1 == s2) = True -- если первая карта туз, а вторая нет, одной масти
+	| (v2 == 11) && (s1 == s2) = False -- если вторая карта туз, одной масти
+	| (v1 > v2) && (s1 == s2) = True -- если первая карта больше второй, одной масти
 	| otherwise = False
 
 {-
@@ -76,7 +76,7 @@ beats GameCard{value=v1} GameCard{value=v2}
 	> beats card2 card2
 	False
 	> beats card2 card
-	True
+	False
 	> let card = GameCard{suit="spades",value=14}
 	> beats card2 card
 	True
@@ -98,9 +98,9 @@ beats2 GameCard{suit=s1, value=v1} GameCard{suit=s2, value=v2} trump
 	| (v1 > v2) && (t1 == True) && (t2 == True) = True -- если первая карта больше второй, обе козырные
 	| (v1 < v2) && (t1 == True) && (t2 == True) = False -- если первая карта меньше второй, обе козырные
 
-	| (v1 == 11) && (v2 /= 11) = True -- если первая карта туз, а вторая нет
-	| (v2 == 11) = False -- если вторая карта туз
-	| (v1 > v2) = True -- если первая карта больше второй
+	| (v1 == 11) && (v2 /= 11) && (s1 == s2) = True -- если первая карта туз, а вторая нет, одной масти
+	| (v2 == 11) && (s1 == s2) = False -- если вторая карта туз, одной масти
+	| (v1 > v2) && (s1 == s2) = True -- если первая карта больше второй, одной масти
 	| otherwise = False
 	where
 		t1 = (s1 == trump)
@@ -115,6 +115,11 @@ beats2 GameCard{suit=s1, value=v1} GameCard{suit=s2, value=v2} trump
 	False
 	> beats2 card card2 "clubs"
 	False
+	> let card2 = GameCard{suit="hearts",value=11}
+	> beats2 card card2 "hearts"
+	False
+	> beats2 card2 card "hearts"
+	True
 -}
 
 --5) Функция beatsList, принимает в качестве аргументов список карт, карту и козырную масть
